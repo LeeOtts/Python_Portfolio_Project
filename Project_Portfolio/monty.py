@@ -9,37 +9,13 @@ import os
 import textwrap
 import time
 import cmd
-
-
-### Player Class ###
-class Player:
-    def __init__(self):
-        self.name = ''
-        self.hp = 10
-        self.shield = 2
-        self.damage = 1
-        self.location = 'b3'
-
-    def add_health(self, health_added):
-        self.hp += health_added
-
-    def attack(self, Enemy):
-        self.damage -= Enemy.hp
-
+from player_class import Player
+from enemy_class import Enemy
 
 # Calling player as Player Class
 player = Player()
 
-### Enemy Class ###
-
-
-class Enemy:
-    def __init__(self, name):
-        self.name = name
-        self.hp = 5
-        self.attack = 1
-
-
+# Calling enemies
 black_knight = Enemy("Black Knight")
 
 ### Title Screen and Section ###
@@ -99,20 +75,6 @@ def help_menu():
     title_screen_selections()
 
 
-### Map is 4x4 Grid ###
-"""
-    a1   a2   a3    a4
-   ---------------------
-a1 |    |    |    |    | a4
-   ---------------------
-b1 |    |    |    |    | b4
-   ---------------------
-c1 |    |    |    |    | c4
-   ---------------------
-d1 |    |    |    |    | d4
-   ---------------------
-     d1   d2   d3   d4
-"""
 ZONENAME: ""
 DESCRIPTION: "description"
 EXAMINATION: "examine"
