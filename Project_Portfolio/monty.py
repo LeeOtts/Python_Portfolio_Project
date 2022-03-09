@@ -18,7 +18,7 @@ class Player:
         self.hp = 10
         self.shield = 2
         self.damage = 1
-        self.location = 'b3'  
+        self.location = 'b3'
 
     def add_health(self, health_added):
         self.hp += health_added
@@ -26,10 +26,12 @@ class Player:
     def attack(self, Enemy):
         self.damage -= Enemy.hp
 
+
 # Calling player as Player Class
 player = Player()
 
 ### Enemy Class ###
+
 
 class Enemy:
     def __init__(self, name):
@@ -37,9 +39,11 @@ class Enemy:
         self.hp = 5
         self.attack = 1
 
+
 black_knight = Enemy("Black Knight")
 
 ### Title Screen and Section ###
+
 
 def title_screen_selections():
     option = input(">")
@@ -60,6 +64,7 @@ def title_screen_selections():
         elif option.lower() == ("quit"):
             print("Run Away... Run Awaaay... run away")
             quit()
+
 
 def title_screen():
     os.system('Clear')
@@ -288,6 +293,36 @@ zonemap = {
 }
 
 ### Game Interaction ###
+
+
+def print_location():
+    print('\n' + ('#' * (4 + len(player.location))))
+    print('#' + player.location.upper() + '#')
+    print('#' + zonemap[player.location][DESCRIPTION] + '#')
+    print('\n' + ('#' * (4 + len(player.location))))
+
+
+def prompt():
+    print("\n")
+    print("====================")
+    print("What would you like to do?")
+    action = input(">")
+    acceptable_actions = ['move', 'go', 'travel', 'walk',
+                          'quit', 'look', 'examine', 'attack', 'hit']
+    while action.lower() not in acceptable_actions:
+        print("Not a accepted action, try again.\n")
+        action = input(">")
+    if action.lower() == 'quit':
+        print("Run Away... Run Awaaay... run away")
+        quit()
+    elif action.lower() in ['move', 'go', 'travel', 'walk']:
+        player_move(action.lower())
+    elif action.lower() in ['look', 'examine']:
+        player_examine(action.lower())
+    elif action.lower() in ['attack', 'hit']:
+        player_attack(action.lower())
+
+
 ### Game Function ###
 
 def start_game():
