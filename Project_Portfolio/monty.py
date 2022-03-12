@@ -9,22 +9,505 @@ import os
 import textwrap
 import time
 import cmd
-from player_class import Player
-from enemy_class import Enemy
+
+
+### Player Class ###
+class Player:
+    def __init__(self):
+        self.name = ''
+        self.hp = 10
+        self.shield = 2
+        self.damage = 1
+        self.location = 'b3'
+        self.status_effect = 'no_quest'
+        self.finished = False
+
+    def add_health(self, health_added):
+        self.hp += health_added
+
+    def player_attack(self, damage, Enemy):
+        self.damage -= Enemy.hp
+
+
+class Enemy:
+    def __init__(self):
+        self.name = ""
+        self.hp = 5
+        self.attack = 1
+
+        def enemy_attack(self, Player):
+            self.damage -= Player.hp
+
 
 # Calling player as Player Class
 player = Player()
 
 # Calling enemies
-black_knight = Enemy("Black Knight")
 
-### Title Screen and Section ###
+
+ZONENAME = ""
+DESCRIPTION = "description"
+EXAMINATION = "examine"
+PREVIOUS_VISIT = False
+UP = "up", "north"
+DOWN = "down", "south"
+LEFT = "left", "west"
+RIGHT = "right", "east"
+
+previous_visit_places = {
+    'a1': False, 'a2': False, 'a3': False, 'a4': False,
+    'b1': False, 'b2': False, 'b3': False, 'b4': False,
+    'c1': False, 'c2': False, 'c3': False, 'c4': False,
+    'd1': False, 'd2': False, 'd3': False, 'd4': False,
+}
+
+### Maps ###
+
+### Map is 4x4 Grid ###
+"""
+    a1   a2   a3    a4
+   ---------------------
+a1 |    |    |    |    | a4
+   ---------------------
+b1 |    |    |    |    | b4
+   ---------------------
+c1 |    |    |    |    | c4
+   ---------------------
+d1 |    |    |    |    | d4
+   ---------------------
+     d1   d2   d3   d4
+"""
+
+
+def map_a1():
+    print('\n')
+    print("    a1   a2   a3    a4")
+    print("   ---------------------")
+    print("a1 | X  |    |    |    | a4")
+    print("   ---------------------")
+    print("b1 |    |    |    |    | b4")
+    print("   ---------------------")
+    print("c1 |    |    |    |    | c4")
+    print("   ---------------------")
+    print("d1 |    |    |    |    | d4")
+    print("   ---------------------")
+    print("     d1   d2   d3   d4")
+    print('\n')
+
+
+def map_a2():
+    print('\n')
+    print("    a1   a2   a3    a4")
+    print("   ---------------------")
+    print("a1 |    | X  |    |    | a4")
+    print("   ---------------------")
+    print("b1 |    |    |    |    | b4")
+    print("   ---------------------")
+    print("c1 |    |    |    |    | c4")
+    print("   ---------------------")
+    print("d1 |    |    |    |    | d4")
+    print("   ---------------------")
+    print("     d1   d2   d3   d4")
+    print('\n')
+
+
+def map_a3():
+    print('\n')
+    print("    a1   a2   a3    a4")
+    print("   ---------------------")
+    print("a1 |    |    | X  |    | a4")
+    print("   ---------------------")
+    print("b1 |    |    |    |    | b4")
+    print("   ---------------------")
+    print("c1 |    |    |    |    | c4")
+    print("   ---------------------")
+    print("d1 |    |    |    |    | d4")
+    print("   ---------------------")
+    print("     d1   d2   d3   d4")
+    print('\n')
+
+
+def map_a4():
+    print('\n')
+    print("    a1   a2   a3    a4")
+    print("   ---------------------")
+    print("a1 |    |    |    | X  | a4")
+    print("   ---------------------")
+    print("b1 |    |    |    |    | b4")
+    print("   ---------------------")
+    print("c1 |    |    |    |    | c4")
+    print("   ---------------------")
+    print("d1 |    |    |    |    | d4")
+    print("   ---------------------")
+    print("     d1   d2   d3   d4")
+    print('\n')
+
+
+def map_b1():
+    print('\n')
+    print("    a1   a2   a3    a4")
+    print("   ---------------------")
+    print("a1 |    |    |    |    | a4")
+    print("   ---------------------")
+    print("b1 | X  |    |    |    | b4")
+    print("   ---------------------")
+    print("c1 |    |    |    |    | c4")
+    print("   ---------------------")
+    print("d1 |    |    |    |    | d4")
+    print("   ---------------------")
+    print("     d1   d2   d3   d4")
+    print('\n')
+
+
+def map_b2():
+    print('\n')
+    print("    a1   a2   a3    a4")
+    print("   ---------------------")
+    print("a1 |    |    |    |    | a4")
+    print("   ---------------------")
+    print("b1 |    | X  |    |    | b4")
+    print("   ---------------------")
+    print("c1 |    |    |    |    | c4")
+    print("   ---------------------")
+    print("d1 |    |    |    |    | d4")
+    print("   ---------------------")
+    print("     d1   d2   d3   d4")
+    print('\n')
+
+
+def map_b3():
+    print('\n')
+    print("    a1   a2   a3    a4")
+    print("   ---------------------")
+    print("a1 |    |    |    |    | a4")
+    print("   ---------------------")
+    print("b1 |    |    | X  |    | b4")
+    print("   ---------------------")
+    print("c1 |    |    |    |    | c4")
+    print("   ---------------------")
+    print("d1 |    |    |    |    | d4")
+    print("   ---------------------")
+    print("     d1   d2   d3   d4")
+    print('\n')
+
+
+def map_b4():
+    print('\n')
+    print("    a1   a2   a3    a4")
+    print("   ---------------------")
+    print("a1 |    |    |    |    | a4")
+    print("   ---------------------")
+    print("b1 |    |    |    | X  | b4")
+    print("   ---------------------")
+    print("c1 |    |    |    |    | c4")
+    print("   ---------------------")
+    print("d1 |    |    |    |    | d4")
+    print("   ---------------------")
+    print("     d1   d2   d3   d4")
+    print('\n')
+
+
+def map_c1():
+    print('\n')
+    print("    a1   a2   a3    a4")
+    print("   ---------------------")
+    print("a1 |    |    |    |    | a4")
+    print("   ---------------------")
+    print("b1 |    |    |    |    | b4")
+    print("   ---------------------")
+    print("c1 | X  |    |    |    | c4")
+    print("   ---------------------")
+    print("d1 |    |    |    |    | d4")
+    print("   ---------------------")
+    print("     d1   d2   d3   d4")
+    print('\n')
+
+
+def map_c2():
+    print('\n')
+    print("    a1   a2   a3    a4")
+    print("   ---------------------")
+    print("a1 |    |    |    |    | a4")
+    print("   ---------------------")
+    print("b1 |    |    |    |    | b4")
+    print("   ---------------------")
+    print("c1 |    | X  |    |    | c4")
+    print("   ---------------------")
+    print("d1 |    |    |    |    | d4")
+    print("   ---------------------")
+    print("     d1   d2   d3   d4")
+    print('\n')
+
+
+def map_c3():
+    print('\n')
+    print("    a1   a2   a3    a4")
+    print("   ---------------------")
+    print("a1 |    |    |    |    | a4")
+    print("   ---------------------")
+    print("b1 |    |    |    |    | b4")
+    print("   ---------------------")
+    print("c1 |    |    | X  |    | c4")
+    print("   ---------------------")
+    print("d1 |    |    |    |    | d4")
+    print("   ---------------------")
+    print("     d1   d2   d3   d4")
+    print('\n')
+
+
+def map_c4():
+    print('\n')
+    print("    a1   a2   a3    a4")
+    print("   ---------------------")
+    print("a1 |    |    |    |    | a4")
+    print("   ---------------------")
+    print("b1 |    |    |    |    | b4")
+    print("   ---------------------")
+    print("c1 |    |    |    | X  | c4")
+    print("   ---------------------")
+    print("d1 |    |    |    |    | d4")
+    print("   ---------------------")
+    print("     d1   d2   d3   d4")
+    print('\n')
+
+
+def map_d1():
+    print('\n')
+    print("    a1   a2   a3    a4")
+    print("   ---------------------")
+    print("a1 |    |    |    |    | a4")
+    print("   ---------------------")
+    print("b1 |    |    |    |    | b4")
+    print("   ---------------------")
+    print("c1 |    |    |    |    | c4")
+    print("   ---------------------")
+    print("d1 | X  |    |    |    | d4")
+    print("   ---------------------")
+    print("     d1   d2   d3   d4")
+    print('\n')
+
+
+def map_d2():
+    print('\n')
+    print("    a1   a2   a3    a4")
+    print("   ---------------------")
+    print("a1 |    |    |    |    | a4")
+    print("   ---------------------")
+    print("b1 |    |    |    |    | b4")
+    print("   ---------------------")
+    print("c1 |    |    |    |    | c4")
+    print("   ---------------------")
+    print("d1 |    | X  |    |    | d4")
+    print("   ---------------------")
+    print("     d1   d2   d3   d4")
+    print('\n')
+
+
+def map_d3():
+    print('\n')
+    print("    a1   a2   a3    a4")
+    print("   ---------------------")
+    print("a1 |    |    |    |    | a4")
+    print("   ---------------------")
+    print("b1 |    |    |    |    | b4")
+    print("   ---------------------")
+    print("c1 |    |    |    |    | c4")
+    print("   ---------------------")
+    print("d1 |    |    | X  |    | d4")
+    print("   ---------------------")
+    print("     d1   d2   d3   d4")
+    print('\n')
+
+
+def map_d4():
+    print('\n')
+    print("    a1   a2   a3    a4")
+    print("   ---------------------")
+    print("a1 |    |    |    |    | a4")
+    print("   ---------------------")
+    print("b1 |    |    |    |    | b4")
+    print("   ---------------------")
+    print("c1 |    |    |    |    | c4")
+    print("   ---------------------")
+    print("d1 |    |    |    | X  | d4")
+    print("   ---------------------")
+    print("     d1   d2   d3   d4")
+    print('\n')
+
+
+### ZoneMap ###
+zonemap = {
+    'a1': {
+        ZONENAME: "Castle Anthrax",
+        DESCRIPTION: "You are wounded. I will fetch the doctor",
+        ## Must use runaway method to escape
+        EXAMINATION: "You walk into a large room, full of woman in white gowns.",
+        PREVIOUS_VISIT: False,
+        UP: "",
+        DOWN: "b1",
+        LEFT: "",
+        RIGHT: "a2",
+    },
+    'a2': {
+        ZONENAME: "Lone Bridge",
+        DESCRIPTION: "You come to a lone bridge.\n You see a furious battle between two knights.\nOne of them is wearing black armour.",
+        #BlackKnight Fight Placeholder
+        EXAMINATION: "trigger black knight fight", 
+        PREVIOUS_VISIT: False,
+        UP: "",
+        DOWN: "b2",
+        LEFT: "a1",
+        RIGHT: "a3"
+    },
+    'a3': {
+        ZONENAME: "a3 zonename",
+        DESCRIPTION: "a3 description",
+        EXAMINATION: "a3 examine",
+        PREVIOUS_VISIT: False,
+        UP: "",
+        DOWN: "b3",
+        LEFT: "a2",
+        RIGHT: "a4",
+    },
+    'a4': {
+        ZONENAME: "a4 zonename",
+        DESCRIPTION: "a4 description",
+        EXAMINATION: "a4 examine",
+        PREVIOUS_VISIT: False,
+        UP: "",
+        DOWN: "b4",
+        LEFT: "a3",
+        RIGHT: "",
+    },
+    'b1': {
+        ZONENAME: "Autonomous Collective",
+        DESCRIPTION: "You see an old ma'am pulling a cart.\n I'm sorry you see an old MAN pulling a cart",
+        EXAMINATION: "b1 examine",
+        PREVIOUS_VISIT: False,
+        UP: "a1",
+        DOWN: "c1",
+        LEFT: "",
+        RIGHT: "b2",
+    },
+    'b2': {
+        ZONENAME: "Small Town",
+        DESCRIPTION: "A small town near the middle of the map.",
+        EXAMINATION: "Bring 'Out your dead",
+        PREVIOUS_VISIT: False,
+        UP: "a2",
+        DOWN: "c2",
+        LEFT: "b1",
+        RIGHT: "b3",
+    },
+    'b3': {
+        ZONENAME: "Starting Point",
+        DESCRIPTION: "This is where you started. You are on top of a foggy hill",
+        EXAMINATION: "examine",
+        PREVIOUS_VISIT: False,
+        UP: "a3",
+        DOWN: "c3",
+        LEFT: "b2",
+        RIGHT: "b4",
+    },
+    'b4': {
+        ZONENAME: "b4 zonename",
+        DESCRIPTION: "b4 description",
+        EXAMINATION: "b4 examine",
+        PREVIOUS_VISIT: False,
+        UP: "a4",
+        DOWN: "c4",
+        LEFT: "b3",
+        RIGHT: "",
+    },
+    'c1': {
+        ZONENAME: "Camelot",
+        DESCRIPTION: "Tis a silly place",
+        EXAMINATION: "You see knights signing and dancing around the Round table",
+        PREVIOUS_VISIT: False,
+        UP: "b1",
+        DOWN: "d1",
+        LEFT: "",
+        RIGHT: "c2",
+    },
+    'c2': {
+        ZONENAME: "c2 zonename",
+        DESCRIPTION: "c2 description",
+        EXAMINATION: "c2 examine",
+        PREVIOUS_VISIT: False,
+        UP: "b2",
+        DOWN: "d2",
+        LEFT: "c1",
+        RIGHT: "c3",
+    },
+    'c3': {
+        ZONENAME: "c3 zonename",
+        DESCRIPTION: "c3 description",
+        EXAMINATION: "c3 examine",
+        PREVIOUS_VISIT: False,
+        UP: "b3",
+        DOWN: "d3",
+        LEFT: "c2",
+        RIGHT: "c4",
+    },
+    'c4': {
+        ZONENAME: "c4 zonename",
+        DESCRIPTION: "c4 description",
+        EXAMINATION: "c4 examine",
+        PREVIOUS_VISIT: False,
+        UP: "b4",
+        DOWN: "d4",
+        LEFT: "c3",
+        RIGHT: "",
+    },
+    'd1': {
+        ZONENAME: "d1 zone",
+        DESCRIPTION: "d1 description",
+        EXAMINATION: "d1 examine",
+        PREVIOUS_VISIT: False,
+        UP: "c1",
+        DOWN: "",
+        LEFT: "",
+        RIGHT: "d2",
+    },
+    'd2': {
+        ZONENAME: "d2 zone",
+        DESCRIPTION: "d2 description",
+        EXAMINATION: "d2 examine",
+        PREVIOUS_VISIT: False,
+        UP: "c2",
+        DOWN: "",
+        LEFT: "d1",
+        RIGHT: "d3",
+    },
+    'd3': {
+        ZONENAME: "d3 zone",
+        DESCRIPTION: "d3 description",
+        EXAMINATION: "d3 examine",
+        PREVIOUS_VISIT: False,
+        UP: "c3",
+        DOWN: "",
+        LEFT: "d2",
+        RIGHT: "d4",
+    },
+    'd4': {
+        ZONENAME: "d4 zone",
+        DESCRIPTION: "d4 description",
+        EXAMINATION: "d4 examine",
+        PREVIOUS_VISIT: False,
+        UP: "c4",
+        DOWN: "",
+        LEFT: "d3",
+        RIGHT: "",
+    },
+}
+
+# Title and Help Screen
 
 
 def title_screen_selections():
-    option = input(">")
+    option = input("> ")
     if option.lower() == ("play"):
-        start_game()  # START GAME PLACEHOLDER
+        start_game()
     elif option.lower() == ("help"):
         help_menu()
     elif option.lower() == ("quit"):
@@ -32,11 +515,11 @@ def title_screen_selections():
         quit()
     while option.lower() not in ["play", "help", "quit"]:
         print("Please enter a valid command")
-        option = input(">")
+        option = input("> ")
         if option.lower() == ("play"):
-            start_game()  # START GAME PLACEHOLDER
+            start_game()
         elif option.lower() == ("help"):
-            help_menu()  # HELP MENU PLACEHOLDER
+            help_menu()
         elif option.lower() == ("quit"):
             print("Run Away... Run Awaaay... run away")
             quit()
@@ -75,184 +558,20 @@ def help_menu():
     title_screen_selections()
 
 
-ZONENAME: ""
-DESCRIPTION: "description"
-EXAMINATION: "examine"
-PREVIOUS_VISIT: False
-UP: "up", "north"
-DOWN: "down", "south"
-LEFT: "left", "west"
-RIGHT: "right", "east"
-
-previous_visit_places = {
-    'a1': False, 'a2': False, 'a3': False, 'a4': False,
-    'b1': False, 'b2': False, 'b3': False, 'b4': False,
-    'c1': False, 'c2': False, 'c3': False, 'c4': False,
-    'd1': False, 'd2': False, 'd3': False, 'd4': False,
-}
-
-zonemap = {
-    'a1': {
-        ZONENAME: "",
-        DESCRIPTION: "description",
-        EXAMINATION: "examine",
-        PREVIOUS_VISIT: False,
-        UP: "",
-        DOWN: "b1",
-        LEFT: "",
-        RIGHT: "a2",
-    },
-    'a2': {
-        ZONENAME: "",
-        DESCRIPTION: "description",
-        EXAMINATION: "examine",
-        PREVIOUS_VISIT: False,
-        UP: "",
-        DOWN: "b2",
-        LEFT: "a1",
-        RIGHT: "a3"
-    },
-    'a3': {
-        ZONENAME: "",
-        DESCRIPTION: "description",
-        EXAMINATION: "examine",
-        PREVIOUS_VISIT: False,
-        UP: "",
-        DOWN: "b3",
-        LEFT: "a2",
-        RIGHT: "a4",
-    },
-    'a4': {
-        ZONENAME: "",
-        DESCRIPTION: "description",
-        EXAMINATION: "examine",
-        PREVIOUS_VISIT: False,
-        UP: "",
-        DOWN: "b4",
-        LEFT: "a3",
-        RIGHT: "",
-    },
-    'b1': {
-        ZONENAME: "",
-        DESCRIPTION: "description",
-        EXAMINATION: "examine",
-        PREVIOUS_VISIT: False,
-        UP: "a1",
-        DOWN: "c1",
-        LEFT: "",
-        RIGHT: "b2",
-    },
-    'b2': {
-        ZONENAME: "",
-        DESCRIPTION: "description",
-        EXAMINATION: "examine",
-        PREVIOUS_VISIT: False,
-        UP: "a2",
-        DOWN: "c2",
-        LEFT: "b1",
-        RIGHT: "b3",
-    },
-    'b3': {
-        ZONENAME: "Starting Point",
-        DESCRIPTION: "You started here",
-        EXAMINATION: "examine",
-        PREVIOUS_VISIT: False,
-        UP: "a3",
-        DOWN: "c3",
-        LEFT: "b2",
-        RIGHT: "b4",
-    },
-    'b4': {
-        ZONENAME: "",
-        DESCRIPTION: "description",
-        EXAMINATION: "examine",
-        PREVIOUS_VISIT: False,
-        UP: "a4",
-        DOWN: "c4",
-        LEFT: "b3",
-        RIGHT: "",
-    },
-    'c1': {
-        ZONENAME: "Camelot",
-        DESCRIPTION: "Tis a silly place",
-        EXAMINATION: "examine",
-        PREVIOUS_VISIT: False,
-        UP: "b1",
-        DOWN: "d1",
-        LEFT: "",
-        RIGHT: "c2",
-    },
-    'c2': {
-        ZONENAME: "",
-        DESCRIPTION: "description",
-        EXAMINATION: "examine",
-        PREVIOUS_VISIT: False,
-        UP: "b2",
-        DOWN: "d2",
-        LEFT: "c1",
-        RIGHT: "c3",
-    },
-    'c3': {
-        ZONENAME: "",
-        DESCRIPTION: "description",
-        EXAMINATION: "examine",
-        PREVIOUS_VISIT: False,
-        UP: "b3",
-        DOWN: "d3",
-        LEFT: "c2",
-        RIGHT: "c4",
-    },
-    'c4': {
-        ZONENAME: "",
-        DESCRIPTION: "description",
-        EXAMINATION: "examine",
-        PREVIOUS_VISIT: False,
-        UP: "b4",
-        DOWN: "d4",
-        LEFT: "c3",
-        RIGHT: "",
-    },
-    'd1': {
-        ZONENAME: "",
-        DESCRIPTION: "description",
-        EXAMINATION: "examine",
-        PREVIOUS_VISIT: False,
-        UP: "c1",
-        DOWN: "",
-        LEFT: "",
-        RIGHT: "d2",
-    },
-    'd2': {
-        ZONENAME: "",
-        DESCRIPTION: "description",
-        EXAMINATION: "examine",
-        PREVIOUS_VISIT: False,
-        UP: "c2",
-        DOWN: "",
-        LEFT: "d1",
-        RIGHT: "d3",
-    },
-    'd3': {
-        ZONENAME: "",
-        DESCRIPTION: "description",
-        EXAMINATION: "examine",
-        PREVIOUS_VISIT: False,
-        UP: "c3",
-        DOWN: "",
-        LEFT: "d2",
-        RIGHT: "d4",
-    },
-    'd4': {
-        ZONENAME: "",
-        DESCRIPTION: "description",
-        EXAMINATION: "examine",
-        PREVIOUS_VISIT: False,
-        UP: "c4",
-        DOWN: "",
-        LEFT: "d3",
-        RIGHT: "",
-    },
-}
+def in_game_help_menu():
+    print("##########################################")
+    print("#               Help Menu                #")
+    print("#                                        #")
+    print("#                Monty.Py                #")
+    print("#                Text RPG                #")
+    print("#                                        #")
+    print("##########################################")
+    print("#  - Use up, down, left, right to move - #")
+    print("#   - Type your commands to do them -    #")
+    print("#   - Use 'look' to inspect location -   #")
+    print("#             - Good Luck -              #")
+    print("##########################################")
+    prompt()
 
 ### Game Interaction ###
 
@@ -268,28 +587,142 @@ def prompt():
     print("\n")
     print("====================")
     print("What would you like to do?")
-    action = input(">")
+    action = input("> ")
     acceptable_actions = ['move', 'go', 'travel', 'walk',
-                          'quit', 'look', 'examine', 'attack', 'hit']
+                          'quit', 'look', 'examine', 'attack', 'hit', 'help', 'map']
     while action.lower() not in acceptable_actions:
         print("Not a accepted action, try again.\n")
-        action = input(">")
+        action = input("> ")
     if action.lower() == 'quit':
         print("Run Away... Run Awaaay... run away")
-        quit()
+        sys.exit()
     elif action.lower() in ['move', 'go', 'travel', 'walk']:
         player_move(action.lower())
     elif action.lower() in ['look', 'examine']:
-        player_examine(action.lower())
+        player_examine()
+
+    elif action.lower() == 'help':
+        in_game_help_menu()
+
     elif action.lower() in ['attack', 'hit']:
-        player_attack(action.lower())
+        print("Add attack action")
+
+    '''
+    elif action.lower() == "map":
+        if zonemap[player.location] == ['a1']:
+            print(map_a1)
+            prompt()
+        if zonemap[player.location] == ['a2']:
+            print(map_a2)
+            prompt()
+        if zonemap[player.location] == ['a3']:
+            print(map_a3)
+            prompt()
+        if zonemap[player.location] == ['a4']:
+            print(map_a4)
+            prompt()
+        if zonemap[player.location] == ['b1']:
+            print(map_b1)
+            prompt()
+        if zonemap[player.location] == ['b2']:
+            print(map_b2)
+            prompt()
+        if zonemap.keys('b3'):
+            print(map_b3)
+            prompt()
+        if zonemap.keys('b4'):
+            print(map_b4)
+            prompt()
+        if zonemap.keys('c1'):
+            print(map_c1)
+            prompt()
+        if zonemap.keys('c2'):
+            print(map_c2)
+        if zonemap.keys('c3'):
+            print(map_c3)
+            prompt()
+        if zonemap.keys('c4'):
+            print(map_c4)
+            prompt()
+        if zonemap[player.location] == ['d1']:
+            print(map_d1)
+            prompt()
+        if zonemap[player.location] == ['d2']:
+            print(map_d2)
+            prompt()
+        if zonemap[player.location] == ['d3']:
+            print(map_d3)
+            prompt()
+        if zonemap[player.location] == ['d4']:
+            print(map_d4)
+            prompt()
+            '''
+
+
+def player_move(myAction):
+    ask = "Where would you like to move to?\n"
+    dest = input(ask)
+    if dest in ['up', 'north']:
+        destination = zonemap[player.location][UP]
+        movement_handler(destination)
+    elif dest in ['down', 'south']:
+        destination = zonemap[player.location][DOWN]
+        movement_handler(destination)
+    elif dest in ['left', 'west']:
+        destination = zonemap[player.location][LEFT]
+        movement_handler(destination)
+    elif dest in ['right', 'east']:
+        destination = zonemap[player.location][RIGHT]
+        movement_handler(destination)
+
+
+def movement_handler(destination):
+    print(f'\nYou have moved to the {destination}.')
+    player.location = destination
+    print_location()
+
+
+def player_examine():
+    if zonemap[player.location][PREVIOUS_VISIT] == True:
+        print('You have been hear before')
+    else:
+        # Trigger event / enemy
+        print('Trigger this event')
 
 
 ### Game Function ###
 
+def main_game_loop():
+    if player.finished is False:
+        prompt()
+    if player.finished is True:
+        print("\nCongrats you have beaten the game. You have explored every inch of the map and killed every enemy lurking around.")
+
+
 def start_game():
-    print("\nHello good Knight.")
-    print("I am Arther, King of the Brittons.")
-    print("Thank you joining my Quest for the Holy Grail?\n")
-    player.name = input("What shall I call you brave knight? ")
-    print(f"\nI dub thee, Sir {player.name}, Knight of the Round Table")
+    arthur_greeting = "Hello good Knight.\n I am Arthur, King of the Brittons.\nThank you joining me\n"
+    for character in arthur_greeting:
+        sys.stdout.write(character)
+        sys.stdout.flush()
+        time.sleep(0.05)
+    whats_your_name = "What shall I call you brave knight?\n "
+    for character in whats_your_name:
+        sys.stdout.write(character)
+        sys.stdout.flush()
+        time.sleep(0.05)
+    player_name = input('> ')
+    player.name = player_name
+    dub = f"I dub thee Sir {player.name}, Knight of Camelot.\n"
+    for character in dub:
+        sys.stdout.write(character)
+        sys.stdout.flush()
+        time.sleep(0.02)
+    time.sleep(3)
+    print('####################')
+    print('#      England     #')
+    print('#      932 a.d.    #')
+    print('####################')
+    main_game_loop()
+
+
+title_screen()
